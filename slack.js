@@ -21,6 +21,8 @@ io.of("/").on("connection", socket => {
 
 namespaces.forEach(namespace => {
   io.of(namespace.endpoint).on("connection", nsSocket => {
+    // handshake happens only once with the main namespace
+    const username = nsSocket.handshake.query.username;
     // console.log(`${nsSocket.id} has joined ${namespace.endpoint}`);
     // a socket has connected to one of our namespace
     // send that group info back
@@ -45,7 +47,7 @@ namespaces.forEach(namespace => {
       const fullMsg = {
         text: msg.text,
         time: Date.now(),
-        username: "rbunch",
+        username,
         avatar: "https://via.placeholder.com/30"
       };
       // console.log("msg", fullMsg);
